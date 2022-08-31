@@ -1,5 +1,6 @@
 package com.sg.superhero.dao;
 
+import com.sg.superhero.dto.Hero;
 import com.sg.superhero.dto.Location;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface LocationDao {
     Location addLocation(Location loc);
     void updateLocation(Location loc);
     void deleteLocationById(int id);
+    List<Location> getLocationByHero(Hero hero);
 }

@@ -79,7 +79,6 @@ public class SightingDaoDBTest {
         Hero hero = new Hero();
         hero.setHeroName("Thor");
         hero.setHeroDescription("The god of thunder");
-        hero.setPower("Lightning");
         hero = heroDao.addHero(hero);
 
         Hero fromDao2 = heroDao.getHeroById(hero.getHeroId());

@@ -1,5 +1,6 @@
 package com.sg.superhero.dao;
 
+import com.sg.superhero.dto.Hero;
 import com.sg.superhero.dto.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -55,13 +56,14 @@ public class LocationDaoDB implements LocationDao{
     @Override
     public void updateLocation(Location loc) {
         final String UPDATE_LOC = "UPDATE location SET locName = ?, locDescription = ?, " +
-                "locAddress = ?, locLat = ?, locLong = ? WHERE id = ?";
+                "locAddress = ?, locLat = ?, locLong = ? WHERE locId = ?";
         jdbc.update(UPDATE_LOC,
                 loc.getLocName(),
                 loc.getLocDescription(),
                 loc.getLocAddress(),
                 loc.getLocLat(),
-                loc.getLocLong());
+                loc.getLocLong(),
+                loc.getLocId());
     }
 
     @Override
@@ -73,6 +75,17 @@ public class LocationDaoDB implements LocationDao{
 
         final String DELETE_LOC = "DELETE FROM location WHERE locId = ?";
         jdbc.update(DELETE_LOC, id);
+    }
+
+    @Override
+    public List<Location> getLocationByHero(Hero hero){
+        final String GET_LOC_BY_HERO_SIGHTING = "SELECT l.locId, l.locName, l.locDescription, l.locAddress, l.locLat, l.locLong "
+                + "FROM sighting s JOIN location l ON l.locId=s.locId "
+                + "JOIN hero h ON h.heroId=s.heroId "
+                + "WHERE h.heroId = ?";
+        List<Location> locs = jdbc.query(GET_LOC_BY_HERO_SIGHTING,
+                new LocationMapper(), hero.getHeroId());
+        return locs;
     }
 
     public static final class LocationMapper implements RowMapper<Location> {

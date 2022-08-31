@@ -1,6 +1,7 @@
 package com.sg.superhero.dao;
 
 import com.sg.superhero.dto.Hero;
+import com.sg.superhero.dto.Power;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,12 +11,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class HeroDaoDBTest {
-
+public class PowerDaoDBTest {
     @Autowired
     HeroDao heroDao;
 
-    public HeroDaoDBTest(){
+    @Autowired
+    PowerDao powerDao;
+
+    public PowerDaoDBTest(){
 
     }
 
@@ -31,10 +34,11 @@ public class HeroDaoDBTest {
 
     @BeforeEach
     public void setUp() {
-        List<Hero> heroes = heroDao.getAllHeroes();
-        for (Hero hero : heroes){
-            heroDao.deleteHeroById(hero.getHeroId());
+        List<Power> powers = powerDao.getAllPower();
+        for (Power power : powers){
+            powerDao.deletePowerById(power.getPowerId());
         }
+
     }
 
     @AfterEach
@@ -43,15 +47,14 @@ public class HeroDaoDBTest {
     }
 
     @Test
-    public void testAddAndGetHero(){
-        Hero hero = new Hero();
-        hero.setHeroName("Thor");
-        hero.setHeroDescription("The god of thunder");
-        hero = heroDao.addHero(hero);
+    public void testAddAndGetPower(){
+        Power power = new Power();
+        power.setPowerName("Telekinesis");
+        power.setPowerDescription("Control objects with your mind.");
+        power = powerDao.addPower(power);
 
-        Hero fromDao = heroDao.getHeroById(hero.getHeroId());
+        Power fromDao = powerDao.getPowerById(power.getPowerId());
 
-        assertEquals(hero, fromDao);
+        assertEquals(power, fromDao);
     }
-
 }

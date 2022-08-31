@@ -1,8 +1,10 @@
 package com.sg.superhero.dao;
 
+import com.sg.superhero.dto.Hero;
 import com.sg.superhero.dto.Location;
 import com.sg.superhero.dto.Sighting;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface SightingDao {
@@ -11,4 +13,6 @@ public interface SightingDao {
     Sighting addSighting(Sighting sighting);
     void updateSighting(Sighting sighting);
     void deleteSightingById(int id);
+
+    List<Sighting> getSightingByDate(Timestamp ts);
 }

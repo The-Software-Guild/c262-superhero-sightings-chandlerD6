@@ -1,5 +1,6 @@
 package com.sg.superhero.dao;
 
+import com.sg.superhero.dto.Hero;
 import com.sg.superhero.dto.Location;
 import com.sg.superhero.dto.Sighting;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -68,6 +70,16 @@ public class SightingDaoDB implements SightingDao{
         final String DELETE_SIGHTING = "DELETE FROM sighting WHERE sightingId = ?";
         jdbc.update(DELETE_SIGHTING, id);
     }
+
+
+    @Override
+    public List<Sighting> getSightingByDate(Timestamp ts){
+        final String GET_SIGHTING_BY_DATE = "SELECT * FROM sighting s WHERE s.sightingDate = ?";
+        List<Sighting> sightings = jdbc.query(GET_SIGHTING_BY_DATE, new SightingMapper(), ts);
+        return sightings;
+    }
+
+
 
     public static final class SightingMapper implements RowMapper<Sighting> {
 

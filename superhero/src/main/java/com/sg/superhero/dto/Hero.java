@@ -1,5 +1,6 @@
 package com.sg.superhero.dto;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Hero {
@@ -7,7 +8,7 @@ public class Hero {
     private int heroId;
     private String heroName;
     private String heroDescription;
-    private String power;
+    private List<Power> power;
 
     public int getHeroId() {
         return heroId;
@@ -33,11 +34,11 @@ public class Hero {
         this.heroDescription = heroDescription;
     }
 
-    public String getPower() {
+    public List<Power> getPower() {
         return power;
     }
 
-    public void setPower(String power) {
+    public void setPower(List<Power> power) {
         this.power = power;
     }
 
