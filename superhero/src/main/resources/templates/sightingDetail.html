@@ -37,11 +37,44 @@
             <a href="sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
         </div>
     </div>
-    <div class="row m-4">
-        <div class="col text-center border border-dark">
-            <h1>Last 10 Sightings</h1>
+
+    <div class="row m-4 border border-dark">
+        <div class="col-6 text-right"><strong>ID</strong></div>
+        <div class="col-6 text-left">
+            <span th:text="${sighting.sightingId}">display id</span>
+        </div>
+
+        <div class="col-6 text-right"><strong>Hero ID</strong></div>
+        <div class="col-6 text-left">
+            <span th:text="${sighting.heroId}">display hero id</span>
+        </div>
+
+        <div class="col-6 text-right"><strong>Location ID</strong></div>
+        <div class="col-6 text-left">
+            <span th:text="${sighting.locId}">display location id</span>
+        </div>
+
+        <div class="col-6 text-right"><strong>Date Time</strong></div>
+        <div class="col-6 text-left">
+            <span th:text="${sighting.sightingDate}">display date time</span>
+        </div>
+
+        <div class="col-6 text-right"><strong>Hero</strong></div>
+        <div class="col-6 text-left">
+            <span th:text="${sighting.hero.heroName + ' : '}">
+                display hero</span>
+            <a href="#" th:href="@{/heroDetail(id=${sighting.hero.heroId})}">Details</a>
+            <br/>
+        </div>
+        <div class="col-6 text-right"><strong>Location</strong></div>
+        <div class="col-6 text-left">
+            <span th:text="${sighting.loc.locName + ' : '}">
+                display location</span>
+            <a href="#" th:href="@{/locationDetail(id=${sighting.loc.locId})}">Details</a>
+            <br/>
         </div>
     </div>
+
 </div>
 
 

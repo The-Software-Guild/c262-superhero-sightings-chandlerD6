@@ -11,6 +11,8 @@ public class Sighting {
     private int heroId;
     private int locId;
     private Timestamp sightingDate;
+    private Hero hero;
+    private Location loc;
 
     public int getSightingId() {
         return sightingId;
@@ -44,16 +46,32 @@ public class Sighting {
         this.sightingDate = sightingDate;
     }
 
+    public Hero getHero() {
+        return hero;
+    }
+
+    public void setHero(Hero hero) {
+        this.hero = hero;
+    }
+
+    public Location getLoc() {
+        return loc;
+    }
+
+    public void setLoc(Location loc) {
+        this.loc = loc;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Sighting sighting = (Sighting) o;
-        return sightingId == sighting.sightingId && heroId == sighting.heroId && locId == sighting.locId;
+        return sightingId == sighting.sightingId && heroId == sighting.heroId && locId == sighting.locId && Objects.equals(hero, sighting.hero) && Objects.equals(loc, sighting.loc);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sightingId, heroId, locId, sightingDate);
+        return Objects.hash(sightingId, heroId, locId, sightingDate, hero, loc);
     }
 }

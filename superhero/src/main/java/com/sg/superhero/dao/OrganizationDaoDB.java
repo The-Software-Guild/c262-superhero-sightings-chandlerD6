@@ -112,7 +112,7 @@ public class OrganizationDaoDB implements OrganizationDao{
                 org.getContactInfo(),
                 org.getOrgId());
 
-        final String DELETE_ORG_MEMS = "DELETE FROM course_student WHERE courseId = ?";
+        final String DELETE_ORG_MEMS = "DELETE FROM orgMembers WHERE orgId = ?";
         jdbc.update(DELETE_ORG_MEMS, org.getOrgId());
         insertOrgMember(org);
     }

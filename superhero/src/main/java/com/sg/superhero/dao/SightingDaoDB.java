@@ -27,8 +27,35 @@ public class SightingDaoDB implements SightingDao{
     public Sighting getSightingById(int id) {
         try {
             final String SELECT_SIGHTING_BY_ID = "SELECT * FROM sighting WHERE sightingId = ?";
-            return jdbc.queryForObject(SELECT_SIGHTING_BY_ID, new SightingMapper(), id);
+            Sighting sighting = jdbc.queryForObject(SELECT_SIGHTING_BY_ID, new SightingMapper(), id);
+            sighting.setHero(getHeroForSighting(sighting.getHeroId()));
+            sighting.setLoc(getLocationForSighting(sighting.getLocId()));
+            return sighting;
         } catch (DataAccessException ex) {
+            return null;
+        }
+    }
+
+    private Hero getHeroForSighting(int id){
+        final String SELECT_HERO_FOR_SIGHTING = "SELECT h.* FROM hero h "
+                + "JOIN sighting s on s.heroId=h.heroId WHERE s.heroId = ?";
+        List<Hero> hero = jdbc.query(SELECT_HERO_FOR_SIGHTING, new HeroDaoDB.HeroMapper(), id);
+        if(!hero.isEmpty()){
+            return hero.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    private Location getLocationForSighting(int id){
+        final String SELECT_LOC_FOR_SIGHTING = "SELECT l.* FROM location l "
+                + "JOIN sighting s on s.locId=l.locId WHERE s.locId = ?";
+        List<Location> loc = jdbc.query(SELECT_LOC_FOR_SIGHTING, new LocationDaoDB.LocationMapper(), id);
+        if(!loc.isEmpty()){
+            return loc.get(0);
+        }
+        else {
             return null;
         }
     }
@@ -36,7 +63,16 @@ public class SightingDaoDB implements SightingDao{
     @Override
     public List<Sighting> getAllSighting() {
         final String SELECT_ALL_SIGHTINGS = "SELECT * FROM sighting";
-        return jdbc.query(SELECT_ALL_SIGHTINGS, new SightingMapper());
+        List<Sighting> sightings = jdbc.query(SELECT_ALL_SIGHTINGS, new SightingMapper());
+        associateSightingsAndHeroesAndLocs(sightings);
+        return sightings;
+    }
+
+    private void associateSightingsAndHeroesAndLocs(List<Sighting> sightings){
+        for(Sighting sighting : sightings){
+            sighting.setHero(getHeroForSighting(sighting.getSightingId()));
+            sighting.setLoc(getLocationForSighting(sighting.getSightingId()));
+        }
     }
 
     @Override
@@ -51,10 +87,13 @@ public class SightingDaoDB implements SightingDao{
 
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         sighting.setSightingId(newId);
+        sighting.setHero(getHeroForSighting(sighting.getHeroId()));
+        sighting.setLoc(getLocationForSighting(sighting.getLocId()));
         return sighting;
     }
 
     @Override
+    @Transactional
     public void updateSighting(Sighting sighting) {
         final String UPDATE_SIGHTING = "UPDATE sighting SET heroId = ?, locId = ?, " +
                 "sightingDate = ? WHERE sightingId = ?";
@@ -63,6 +102,8 @@ public class SightingDaoDB implements SightingDao{
                 sighting.getLocId(),
                 sighting.getSightingDate(),
                 sighting.getSightingId());
+        sighting.setHero(getHeroForSighting(sighting.getHeroId()));
+        sighting.setLoc(getLocationForSighting(sighting.getLocId()));
     }
 
     @Override
@@ -76,6 +117,10 @@ public class SightingDaoDB implements SightingDao{
     public List<Sighting> getSightingByDate(Timestamp ts){
         final String GET_SIGHTING_BY_DATE = "SELECT * FROM sighting s WHERE s.sightingDate = ?";
         List<Sighting> sightings = jdbc.query(GET_SIGHTING_BY_DATE, new SightingMapper(), ts);
+        for(Sighting sighting : sightings){
+            sighting.setHero(getHeroForSighting(sighting.getHeroId()));
+            sighting.setLoc(getLocationForSighting(sighting.getLocId()));
+        }
         return sightings;
     }
 

@@ -37,11 +37,33 @@
             <a href="sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
         </div>
     </div>
-    <div class="row m-4">
-        <div class="col text-center border border-dark">
-            <h1>Last 10 Sightings</h1>
+
+    <div class="row m-4 border border-dark">
+        <div class="col-6 text-right"><strong>ID</strong></div>
+        <div class="col-6 text-left">
+            <span th:text="${org.orgId}">display id</span>
+        </div>
+
+        <div class="col-6 text-right"><strong>Name</strong></div>
+        <div class="col-6 text-left">
+            <span th:text="${org.orgName}">display name</span>
+        </div>
+
+        <div class="col-6 text-right"><strong>Description</strong></div>
+        <div class="col-6 text-left">
+            <span th:text="${org.orgDescription}">display description</span>
+        </div>
+        <div class="col-6 text-right"><strong>Heroes</strong></div>
+        <div class="col-6 text-left">
+                    <span th:each="hero : ${org.heroes}">
+                        <span th:text="${hero.heroName + ' : ' + hero.heroDescription + ' : '} ">
+                            display hero</span>
+                        <a href="#" th:href="@{/heroDetail(id=${hero.heroId})}">Details</a>
+                        <br/>
+                    </span>
         </div>
     </div>
+
 </div>
 
 
